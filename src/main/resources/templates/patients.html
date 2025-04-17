@@ -4,43 +4,81 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        .form-inline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
-<div class="p-3">
+<div class="main-container">
     <div class="card">
-        <div class="card-header" >Liste Patient</div>
-         <div class="card-body">
-
-         <table class="table">
-             <thead>
-             <tr>
-                 <th>ID</th>    <th>Nom</th>    <th>Date</th>    <th>Malade</th>    <th>Score</th>
-             </tr>
-             <tr th:each="p:${listPatients}">
-                 <td th:text="${p.id}"></td>
-                 <td th:text="${p.nom}"></td>
-                 <td th:text="${p.dateNaissance}"></td>
-                 <td th:text="${p.malade}"></td>
-                 <td th:text="${p.score}"></td>
-                 <td>
-                     <a   onclick="javascript:return confirm('Etes vous sure?')" th:href="@{delete(id=${p.id} , keyword=${keyword} , page=${currentPage})}  " class="btn btn-danger">Delete</a>
-                 </td>
-             </tr>
-             </thead>
-         </table>
-
-             <ul class="nav nav-pills">
-                 <li th:each="page,status:${pages}">
-                     <a th:href="@{/index(page=${status.index})}"
-                          th:class="${(currentPage==status.index)?'btn btn-info ms-1':'btn btn-outline- ms-1'}"
-                          th:text="${status.index}"></a>
-
-                 </li>
-             </ul>
-
-         </div>
+        <div class="card-header text-center">Liste Patient</div>
+        <div class="card-body">
+            <form method="get" th:action="@{index}" class="form-inline mb-3">
+                <label class="me-2">Keyword:</label>
+                <input class="form-control" type="text" name="keyword" th:value="${keyword}">
+                <button type="submit" class="btn btn-info">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+            <table class="table table-bordered text-center">
+                <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Date</th>
+                    <th>Malade</th>
+                    <th>Score</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p:${listPatients}">
+                    <td th:text="${p.id}"></td>
+                    <td th:text="${p.nom}"></td>
+                    <td th:text="${p.dateNaissance}"></td>
+                    <td th:text="${p.malade}"></td>
+                    <td th:text="${p.score}"></td>
+                    <td>
+                        <a onclick="javascript:return confirm('Etes vous sure?')"
+                           th:href="@{delete(id=${p.id} , keyword=${keyword} , page=${currentPage})}" class="btn btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="nav justify-content-center">
+                <li class="nav-item" th:each="v,item:${pages}">
+                    <a th:href="@{/index(page=${item.index},keyword=${keyword})}"
+                       th:class="${(currentPage==item.index)?'btn btn-info ms-1':'btn btn-outline-secondary ms-1'}"
+                       th:text="${item.index}"></a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
-
 </body>
 </html>
