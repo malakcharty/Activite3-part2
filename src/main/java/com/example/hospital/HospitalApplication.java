@@ -1,12 +1,10 @@
 package com.example.hospital;
-
 import com.example.hospital.entities.Patient;
 import com.example.hospital.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.util.Date;
 
 @SpringBootApplication
