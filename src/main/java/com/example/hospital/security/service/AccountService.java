@@ -1,4 +1,4 @@
-package com.example.hospital.security.entities.service;
+package com.example.hospital.security.service;
 
 import com.example.hospital.security.entities.AppRole;
 import com.example.hospital.security.entities.AppUser;
@@ -8,6 +8,7 @@ public interface AccountService {
     AppRole addNewRole (String role);
     void addRoleToUser(String username, String role);
     void removeRoleFromUser(String username, String role);
+    AppUser loadUserByUsername(String username);
 
 
 

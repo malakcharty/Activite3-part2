@@ -1,9 +1,10 @@
-package com.example.hospital.security.entities.service;
+package com.example.hospital.security.service;
 
 import com.example.hospital.security.entities.AppRole;
 import com.example.hospital.security.entities.AppUser;
 import com.example.hospital.security.repo.AppRoleRepository;
 import com.example.hospital.security.repo.AppUserRepository;
+import com.example.hospital.security.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,16 +38,33 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AppRole addNewRole(String role)
     {
-        return null;
+        AppRole appRole=appRoleRepository.findById(role).orElse(null);
+        if (appRole!=null) return appRole;
+        appRole=AppRole.builder()
+                .role(role)
+                .build();
+        return appRoleRepository.save(appRole);
     }
 
     @Override
     public void addRoleToUser(String username, String role) {
-
+        AppUser appUser=appUserRepository.findByUsername(username);
+        AppRole appRole=appRoleRepository.findById(role).get();
+        if (!appUser.getRoles().contains(appRole)) {
+            appUser.getRoles().add(appRole);
+        }
+        //appUserRepository.save(appUser);
     }
 
     @Override
     public void removeRoleFromUser(String username, String role) {
+        AppUser appUser=appUserRepository.findByUsername(username);
+        AppRole appRole=appRoleRepository.findById(role).get();
+        appUser.getRoles().remove(appRole);
+    }
 
+    @Override
+    public AppUser loadUserByUsername(String username) {
+        return appUserRepository.findByUsername(username);
     }
 }
